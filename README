@@ -1,3 +1,10 @@
+########################
+### Install like a Hero!
+########################
+curl -s https://raw.githubusercontent.com/ualter/mybashfunctions/main/get-my.sh | bash
+
+# OR
+
 #####################
 ### Install (4 Steps)
 #####################
@@ -5,12 +12,3 @@
 2. echo "source ~/.myfunctions.sh" >> ~/.bashrc
 3. source ~/.bashrc
 4. myf
-
-# OR
-
-########################
-### Install like a Hero!
-########################
-curl -s https://raw.githubusercontent.com/ualter/mybashfunctions/main/get-my.sh | bash
-
-
