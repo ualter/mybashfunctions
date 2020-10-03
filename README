@@ -6,4 +6,11 @@
 3. source ~/.bashrc
 4. myf
 
+# OR
+
+########################
+### Install like a Hero!
+########################
+curl -s https://raw.githubusercontent.com/ualter/mybashfunctions/main/get-my.sh | bash
+
 
