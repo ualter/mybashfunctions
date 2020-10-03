@@ -1,0 +1,7 @@
+```bash
+# Install (4 Steps)
+1. git clone -b rel https://github.com/ualter/mybashfunctions.git ~/
+2. echo "source ~/.myfunctions.sh" >> ~/.bashrc
+3. source ~/.bashrc
+4. myf
+```
