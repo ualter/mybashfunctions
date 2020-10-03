@@ -5,7 +5,6 @@ sleep 3
 source ~/.zshrc
 sleep 1
 source ~/.bashrc
-myf
 echo ""
 echo "Installed!"
 echo ""
