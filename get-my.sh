@@ -1,5 +1,5 @@
-git clone -b rel https://github.com/ualter/mybashfunctions.git ~/
-echo "source ~/.myfunctions.sh" >> ~/.bashrc
+git clone -b rel https://github.com/ualter/mybashfunctions.git ~/.myfunctions
+echo "source ~/.myfunctions/.myfunctions.sh" >> ~/.bashrc
 source ~/.bashrc
 myf
 echo ""
