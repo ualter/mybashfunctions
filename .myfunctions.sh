@@ -39,7 +39,16 @@ alias d='docker $1 $2 $3 $4 $5 $6 $7'
 alias gpush='git add -A && git commit -m "." && git push'
 # GENERIC
 alias hg='history | grep'
-
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias l='ls -laF --color=auto'
+alias ll='ls -laF --color=auto'
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias d='date +%F'
+alias apt-get="sudo apt-get"
 
 myf() {
     clear
@@ -54,6 +63,7 @@ myf() {
     echo " "                  
     echo " 📌🎆 ${IBlue}KUBERNETES${Reset}"
     echo "      k8ns.............: ${Cyan}Change the namespace of kubectl context:${Reset} k8ns {NAMESPACE} "                           | GREP_COLOR='01;32' egrep -i --color=always "k8ns"
+    echo "      k8pl.............: ${Cyan}Read logs of a Pod:${Reset} k8ns {NAMESPACE} "                                                | GREP_COLOR='01;32' egrep -i --color=always "k8pl"
     echo " "                  
     echo " 📌🎎 ${IBlue}ALIAS${Reset}"
     echo "      minikube.........: m [arguments] " | GREP_COLOR='01;32' egrep -i --color=always "minikube"
@@ -89,6 +99,48 @@ k8ns()  {
        echo "${IRed}Missed argument, the namespace!${Reset}"
     fi
     echo ""
+}
+
+#################################################################################
+# Read Pods Log
+#################################################################################
+k8pl() { 
+    clear
+    echo ""
+    printf "${Green} 🚀 Running... Pods Log View $1${Reset}\n"
+    echo ""
+    index=1
+    printf "   ${Blue}-->${Reset} Pick out a number:\n"
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      printf "   ${Green}[${IYellow}$index${Green}] ${IBlue}$line\n"
+      index=$(( $index + 1 ))
+    done
+    printf "${Green}   Number...: " 
+    printf "${Reset}"
+    read var
+    index=0
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      index=$(( $index + 1 ))
+      if [ "$var" = "$index" ]; then
+      	 follow=""
+      	 for v in "$@"; do
+      	 	if [ "$v" = "-f" ]; then
+      	 		 follow="-f"
+      	 		 break
+		    fi
+		 done
+      	 kubectl logs $follow --tail=200 $line
+      	 break
+      fi
+    done
+    printf "${Blue}"
+    echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+    printf "${Green}[${IYellow}1${Green}] ${IBlue}Back to Menu | ${Green}[${IYellow}ENTER${Green}] ${IBlue}Exit\n"
+    read -n 1 var
+    if [ "$var" = "1" ]; then
+       k8pl
+    fi
+    echo ""   
 }
 
 #################################################################################
