@@ -265,7 +265,9 @@ docls() {
         echo $dockerId | xsel --clipboard
         echo ""
     else 
-        docker ps
+        printf "${IBlue}"
+        docker ps -a --format  "table {{.ID}}\t{{.Image}}\t{{.Names}}"
+        printf "${Reset}"
     fi    
 }
 
