@@ -220,6 +220,58 @@ showPickDockerLine() {
     listDocCmd $1 
 }
 
+prettyPrintDockerPs() {
+    index=-1
+    echo ""
+    printf " ${IRed}"
+    printf '=%.0s' {1..159}
+    echo ""
+
+    docker ps -a --format  "table {{.ID}}#{{.Image}}#{{.Names}}#{{.Status}}" | while read -r line ; do
+        IFS='#' read -r -A array <<< "$line"
+        index=$(( $index + 1 ))
+        if (( $index > 0 )); then
+            printf " ${Green}[${IGreen}$index${Green}] "
+        else    
+            printf "  🐳 "
+        fi
+    
+        index2=0
+        for element in "${array[@]}"
+        do
+            index2=$(( $index2 + 1 ))
+            if (( $index2 == 1 )); then
+                if (( $index == 0 )); then
+                    v=$(printf '%-22s' "$element")
+                    printf "${IRed}| ${Yellow}$v${Yellow}"
+                else
+                    v=$(printf '%-22s' "$element")
+                    printf "${IRed}| ${IBlue}$v${Green}"
+                fi
+            else
+                if (( $index == 0 )); then
+                    v=$(printf '%-42s' "$element")
+                    printf "${IRed}| ${Yellow}$v${Yellow}"
+                else
+                    v=$(printf '%-42s' "$element")
+                    printf "${IRed}| ${IBlue}$v${Green}"
+                fi
+            fi
+        done
+
+        if (( $index == 0 )); then
+            echo ""
+            printf " ${IRed}"
+            printf '=%.0s' {1..159}
+        fi
+        echo ""
+    done
+    printf " ${IRed}"
+    printf '=%.0s' {1..159}
+    echo ""
+    echo ""
+}
+
 #################################################################################
 # List Dockers
 #################################################################################
@@ -230,7 +282,7 @@ docls() {
     echo "${Green} 🚀 Running... List Dockers $1${Reset}"
     echo ""
     if [ "$1" ]; then
-        lines=$(docker ps -a -f name=$1 --format "{{.ID}} {{.Image}} {{.Names}}" | wc -l)
+        lines=$(docker ps -a -f name=$1 --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}" | wc -l)
         if (( $lines > 1 )); then
            showPickDockerLine $1
            read var
@@ -265,11 +317,13 @@ docls() {
         echo $dockerId | xsel --clipboard
         echo ""
     else 
-        printf "${IBlue}"
-        docker ps -a --format  "table {{.ID}}\t{{.Image}}\t{{.Names}}"
-        printf "${Reset}"
+        #printf "${IBlue}"
+        #docker ps -a --format  "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"
+        prettyPrintDockerPs
+        #printf "${Reset}"
     fi    
 }
+
 
 #################################################################################
 # Execute bash/sh iterativo on Docker Container Instance
