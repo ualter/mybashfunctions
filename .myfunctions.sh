@@ -117,7 +117,7 @@ k8pl() {
     done
     printf "${Green}   Number...: " 
     printf "${Reset}"
-    read var
+    read -n 1 var
     index=0
     kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
       index=$(( $index + 1 ))
@@ -142,6 +142,7 @@ k8pl() {
     fi
     echo ""   
 }
+k8pl
 
 #################################################################################
 #  ____   ___   ____ _  _______ ____  ____  
