@@ -117,7 +117,7 @@ k8pl() {
     done
     printf "${Green}   Number...: " 
     printf "${Reset}"
-    read -n 1 var
+    read var
     index=0
     kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
       index=$(( $index + 1 ))
@@ -136,7 +136,7 @@ k8pl() {
     printf "${Blue}"
     echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
     printf "${Green}[${IYellow}1${Green}] ${IBlue}Back to Menu | ${Green}[${IYellow}ENTER${Green}] ${IBlue}Exit\n"
-    read -n 1 var
+    read var
     if [ "$var" = "1" ]; then
        k8pl
     fi
