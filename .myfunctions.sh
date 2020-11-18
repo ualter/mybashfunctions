@@ -63,7 +63,7 @@ myf() {
     echo " "                  
     echo " 📌🎆 ${IBlue}KUBERNETES${Reset}"
     echo "      k8ns.............: ${Cyan}Change the namespace of kubectl context:${Reset} k8ns {NAMESPACE} "                           | GREP_COLOR='01;32' egrep -i --color=always "k8ns"
-    echo "      k8pl.............: ${Cyan}Read logs of a Pod:${Reset} k8ns {NAMESPACE} "                                                | GREP_COLOR='01;32' egrep -i --color=always "k8pl"
+    echo "      k8pl.............: ${Cyan}Read logs of a Pod:${Reset} k8pl [-f] {NAMESPACE} "                                           | GREP_COLOR='01;32' egrep -i --color=always "k8pl"
     echo " "                  
     echo " 📌🎎 ${IBlue}ALIAS${Reset}"
     echo "      minikube.........: m [arguments] " | GREP_COLOR='01;32' egrep -i --color=always "minikube"
@@ -124,7 +124,7 @@ k8pl() {
       if [ "$var" = "$index" ]; then
       	 follow=""
       	 for v in "$@"; do
-      	 	if [ "$v" = "-f" ]; then
+            if [ "$v" = "-f" ]; then
       	 		 follow="-f"
       	 		 break
 		    fi
@@ -139,6 +139,96 @@ k8pl() {
     read var
     if [ "$var" = "1" ]; then
        k8pl
+    fi
+    echo ""   
+}
+
+#################################################################################
+# Exec Shell Pod Container
+#################################################################################
+k8exe() { 
+    clear
+    echo ""
+    printf "${Green} 🚀 Running... Execute Shell $1${Reset}\n"
+    echo ""
+    index=1
+    printf "   ${Blue}-->${Reset} Pick out a number:\n"
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      printf "   ${Green}[${IYellow}$index${Green}] ${IBlue}$line\n"
+      index=$(( $index + 1 ))
+    done
+    printf "${Green}   Number...: " 
+    printf "${Reset}"
+    read var
+    index=0
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      index=$(( $index + 1 ))
+      if [ "$var" = "$index" ]; then
+      	 follow=""
+      	 for v in "$@"; do
+            #if [ "$v" = "-f" ]; then
+      	 	#	 follow="-f"
+      	 	#	 break
+		    #fi
+		 done
+         echo ""
+         printf "$> Shell over ${Green}$line${Reset}\n"
+         kubectl get pods | grep $line | awk '{print $1}' | xargs  -o sh -c 'kubectl exec -i $0 -- /bin/sh'
+      	 break
+      fi
+    done
+    printf "${Blue}"
+    echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+    printf "${Green}[${IYellow}1${Green}] ${IBlue}Back to Menu | ${Green}[${IYellow}ENTER${Green}] ${IBlue}Exit\n"
+    read var
+    if [ "$var" = "1" ]; then
+       k8exe
+    fi
+    echo ""   
+}
+
+#################################################################################
+# List Container Images
+#################################################################################
+k8cnt() { 
+    clear
+    echo ""
+    printf "${Green} 🚀 Running... Listing Container Images $1${Reset}\n"
+    echo ""
+    index=1
+    printf "   ${Blue}-->${Reset} Pick out a number:\n"
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      printf "   ${Green}[${IYellow}$index${Green}] ${IBlue}$line\n"
+      index=$(( $index + 1 ))
+    done
+    printf "\n   ${IYellow}ENTER${Reset} ${IBlue}for all Containers, all namespaces${Reset}\n\n" 
+    printf "${Green}   Number...: " 
+    printf "${Reset}"
+    read var
+    index=0
+    shown=0
+    kubectl get pod -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | while read -r line ; do
+      index=$(( $index + 1 ))
+      if [ "$var" = "$index" ]; then
+         echo ""
+         echo $line
+         shown=1
+         printf " Containers ${Green}$line${Reset}\n"
+         kubectl get pod $line -o jsonpath="{..image}" | tr -s '[[:space:]]' '\n' | sort | uniq -c
+      	 break
+      fi
+    done
+    if ((shown == 0)); then
+        echo ""
+        printf " ${Green}All Containers${Reset}\n"
+        kubectl get pods --all-namespaces -o jsonpath="{..image}" | tr -s '[[:space:]]' '\n' | sort | uniq -c
+    fi    
+    printf "${Blue}"
+    echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+    printf "${Green}[${IYellow}1${Green}] ${IBlue}Back to Menu | ${Green}[${IYellow}ENTER${Green}] ${IBlue}Exit\n"
+    read var
+    if [ "$var" = "1" ]; then
+       k8cnt
     fi
     echo ""   
 }
