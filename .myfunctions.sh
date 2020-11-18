@@ -64,6 +64,8 @@ myf() {
     echo " 📌🎆 ${IBlue}KUBERNETES${Reset}"
     echo "      k8ns.............: ${Cyan}Change the namespace of kubectl context:${Reset} k8ns {NAMESPACE} "                           | GREP_COLOR='01;32' egrep -i --color=always "k8ns"
     echo "      k8pl.............: ${Cyan}Read logs of a Pod:${Reset} k8pl [-f] {NAMESPACE} "                                           | GREP_COLOR='01;32' egrep -i --color=always "k8pl"
+    echo "      k8exe............: ${Cyan}Request Shell over a Pod:${Reset} k8exe"                                                      | GREP_COLOR='01;32' egrep -i --color=always "k8exe"
+    echo "      k8cnt............: ${Cyan}List all containers of a Pod, or all of them:${Reset} k8cnt"                                  | GREP_COLOR='01;32' egrep -i --color=always "k8cnt"
     echo " "                  
     echo " 📌🎎 ${IBlue}ALIAS${Reset}"
     echo "      minikube.........: m [arguments] " | GREP_COLOR='01;32' egrep -i --color=always "minikube"
