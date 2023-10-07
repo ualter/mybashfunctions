@@ -8,7 +8,7 @@ curl -s https://raw.githubusercontent.com/ualter/mybashfunctions/main/get-my.sh 
 #####################
 ### Install (4 Steps)
 #####################
-1. git clone -b rel https://github.com/ualter/mybashfunctions.git ~/
-2. echo "source ~/.myfunctions.sh" >> ~/.bashrc
-3. source ~/.bashrc
+1. git clone -b rel https://github.com/ualter/mybashfunctions.git ~/.myfunctions
+2. echo "source ~/.myfunctions/.myfunctions.sh" >> ~/.zshrc
+3. source ~/.zshrc
 4. myf
