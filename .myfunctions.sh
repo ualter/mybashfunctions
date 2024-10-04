@@ -42,7 +42,7 @@ alias hg='history | grep'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
-alias l='ls -laF --color=auto'
+alias l='ls -lF --color=auto'
 alias ll='ls -laF --color=auto'
 alias ..='cd ..'
 alias ...='cd ../../../'
@@ -622,4 +622,19 @@ _docInspect() {
        read var
     fi
     echo " "
+}
+
+# Usage:
+# for fzf tool execute a command as it exist (change directory, open file, etc.)
+# f cd [OPTION]... (hit enter, choose path)
+# f cat [OPTION]... (hit enter, choose files)
+# f code [OPTION]... (hit enter, choose files)
+f() {
+    program="$1"
+    arguments="$(fzf --multi)"
+    if [ -z "${arguments}" ]; then
+        echo "missing arguments, usage: f code, f cd"
+        return 1
+    fi
+    "$@" $arguments
 }

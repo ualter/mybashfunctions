@@ -1,0 +1,10 @@
+{
+    "Parameters": {
+        "commands": [
+            "#!/bin/bash",
+            "mkdir -p /home/ec2-user/.ssh",
+            "cd /home/ec2-user/.ssh",
+            "echo 'ssh-rsa ...aoac0mNOHpypTkuHJV+mW2lG2QqqRTNw== ualter.junior@gmail.com' >> authorized_keys"
+        ]
+    }
+}

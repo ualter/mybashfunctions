@@ -1,0 +1,10 @@
+{
+    "Parameters": {
+        "commands": [
+            "#!/bin/bash",
+            "mkdir -p /home/ec2-user/.ssh",
+            "cd /home/ec2-user/.ssh",
+            "grep -F '%PUBLIC_KEY%' authorized_keys || echo '%PUBLIC_KEY% name-session' >> authorized_keys"
+        ]
+    }
+}
