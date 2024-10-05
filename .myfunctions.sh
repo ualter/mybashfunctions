@@ -629,7 +629,7 @@ _docInspect() {
 # f cd [OPTION]... (hit enter, choose path)
 # f cat [OPTION]... (hit enter, choose files)
 # f code [OPTION]... (hit enter, choose files)
-# f() {
+# f__() {
 #     program="$1"
 #     if [ "$#" -lt 1 ]; then
 #         fzf
