@@ -631,10 +631,10 @@ _docInspect() {
 # f code [OPTION]... (hit enter, choose files)
 f() {
     program="$1"
-    arguments="$(fzf --multi)"
-    if [ -z "${arguments}" ]; then
-        echo "missing arguments, usage: f code, f cd"
-        return 1
+    if [ "$#" -lt 1 ]; then
+        fzf
+        return 0
     fi
+    arguments="$(fzf --multi)"
     "$@" $arguments
 }
